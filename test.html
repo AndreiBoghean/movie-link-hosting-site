@@ -17,6 +17,13 @@
       <input type="password" name="password" placeholder="password"/>
       <button id="log-btn">Log In</button>
     </form>  
+    
+    <form id="upload-form">
+      <input type="text" placeholder="movie name" id="movie-name"/>
+      <input type="text" placeholder="thumbnail path" id="movie-poster" />
+      <input type="file" accept="video/*" id="file-select"/>
+      <button>Upload</button>
+    </form>
   </nav>
 
   <div class="content-container">
@@ -44,6 +51,7 @@
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-firestore.js"></script>     
 <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-storage.js"></script>
 
 <script>
 
@@ -62,6 +70,7 @@
 
   var db = firebase.firestore();
   var auth = firebase.auth();
+  var storage = firebase.storage();
 //#endregion
 
  //#region login system
@@ -111,7 +120,8 @@
      moviesCollection.get()
      .then((querysnapshot) => 
      {
-       querysnapshot.forEach(element => {
+       querysnapshot.forEach(element => 
+       {
          movieData.push(element.data())
        });
 
@@ -122,11 +132,13 @@
 
   function renderMovies(MovieData) 
   {
-    let featuredMovie = MovieData.splice(0,1);
     
-    createFeaturedMovie(featuredMovie[0])
+    let featuredMovie = MovieData.splice(0,1);
 
-    MovieData.forEach(movie => createMovieForGrid(movie[0]))
+    createFeaturedMovie(featuredMovie[0]);
+
+    MovieData.forEach(movie => createMovieForGrid(movie));
+
   }
 
   function createFeaturedMovie(movieInfo) 
@@ -159,6 +171,56 @@
   }
   //#endregion
 
+//#region Uploading Movies
+
+const uploadForm = document.getElementById("upload-form");
+const fileSelector = document.getElementById("file-select");
+const nameInput = document.getElementById("movie-name")
+const posterInput = document.getElementById("movie-poster")
+
+uploadForm.addEventListener("submit",(e) => 
+{
+  e.preventDefault();
+  
+  if(nameInput.value.length == 0 && posterInput.value.length === 0 && fileSelector.value == "") return;
+
+  uploadMovieToStorage() 
+})
+
+function uploadMovieToStorage() 
+{
+   let file = fileSelector.files[0];
+   let ref = storage.ref().child(nameInput.value + getVideoType(file.type))
+
+   ref.put(file)
+   .then((snapshot) => 
+   {
+      let moviePath = "https://firebasestorage.googleapis.com/v0/b/movies-2497b.appspot.com/o/" + snapshot.metadata.fullPath + "?alt=media";
+
+      createDbData(moviePath)
+   })
+}
+
+function createDbData(moviePath) 
+{
+   db.collection("Movies").add(
+     {
+       Name: nameInput.value,
+       Path: moviePath,
+       PosterPath: posterInput.value
+     })
+    .then(() => 
+    {
+       alert("uploading complete you can refresh page now");
+    })
+}
+
+function getVideoType(videoType) 
+{
+  return "." + videoType.substring(6);
+}
+
+//#endregion
 </script>
 
 </body>
