@@ -199,6 +199,10 @@ function uploadMovieToStorage()
 
       createDbData(moviePath)
    })
+   .catch(() => 
+   {
+     alert("you need to log in");
+   })
 }
 
 function createDbData(moviePath) 
