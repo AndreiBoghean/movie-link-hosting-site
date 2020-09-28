@@ -20,14 +20,16 @@ body
 {
     background-color: var(--darkest);
     display: flex;
+    font-size: 1rem;
 }
 
 nav 
 {
-    width: 10%;
+    width: 15em;
     height: 100vh;
     position: sticky;
     top: 0;
+    bottom: 0;
     background:#201F1F;
 }
 
@@ -41,7 +43,7 @@ nav .logo
 
 nav h1 
 {
-    font-size: 2.8rem;
+    font-size: 2.8em;
     text-align: center;
     color: white;
 }
@@ -70,7 +72,7 @@ nav li a
     align-items: center;
     text-decoration: none;
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.3em;
     font-weight: 300;
 }
 
@@ -83,7 +85,7 @@ nav li a
 
 .features-section video 
 {
-    width: 70%;
+    width: 50em;
     height: auto;
     margin-top: 20px;
     border-radius: 5px;
@@ -97,7 +99,7 @@ nav li a
 
 .sub-heading 
 {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     color: var(--reverse);
     font-weight: bold;
     letter-spacing: 3px;
@@ -114,8 +116,34 @@ nav li a
 
 .movies-grid video 
 {
-    width: 48%;
+    width: 40em;
     height: auto;
     margin-top: 20px;
 }
 
+@media(max-width: 1400px) 
+{
+    body 
+    {
+        font-size: 0.8rem;
+    }
+
+    .content-container 
+    {
+        padding: 20px 50px;
+    }
+}
+
+@media(max-width: 1200px) 
+{
+    body 
+    {
+        font-size: 0.6rem;
+    }
+
+    .movies-grid 
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
