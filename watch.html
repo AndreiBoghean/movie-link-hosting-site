@@ -44,6 +44,11 @@
 
     const movieID = queryObject.get("movieID");
 
+    if(!movieID) 
+    {
+        window.location.href = "/movie-link-hosting-site/index.html"
+    }
+
     getMovieInfo();
 
     function getMovieInfo() 
