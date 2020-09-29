@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch</title>
+</head>
+<body id="body">
+  
+  
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-firestore.js"></script>     
+  <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-storage.js"></script>
+
+  <script>
+
+  //#region firebase config
+  var firebaseConfig = {
+    apiKey: "AIzaSyAcLB4KXLJuY0h0frapGOiTYozINTgwHxE",
+    authDomain: "movies-2497b.firebaseapp.com",
+    databaseURL: "https://movies-2497b.firebaseio.com",
+    projectId: "movies-2497b",
+    storageBucket: "movies-2497b.appspot.com",
+    messagingSenderId: "777577045829",
+    appId: "1:777577045829:web:1b8fd94c35bba31254a82c"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  var db = firebase.firestore();
+  var auth = firebase.auth();
+  var storage = firebase.storage();
+  //#endregion
+
+    const currentUrl = new URL(window.location.href);
+    const queryObject = currentUrl.searchParams
+    const body = document.getElementById("body");
+
+    const movieID = queryObject.get("movieID");
+
+    getMovieInfo();
+
+    function getMovieInfo() 
+    {
+        let collection = db.collection("Movies");
+        let doc = collection.doc(movieID.toString());
+
+        doc.get()
+        .then(doc => 
+        {
+           if(!doc.exists) 
+           {
+               window.location.href = "/index.html";
+               return;
+           }
+           
+           renderMovie(doc.data())
+
+
+        })
+        .catch(error => console.log(error))
+
+    }
+
+    function renderMovie(movieInfo) 
+    {
+      
+      let h1 = document.createElement("h1");
+      let video = document.createElement("video");
+      let source = document.createElement("source");
+      let track = document.createElement("track");
+
+      h1.innerText = movieInfo.Name;
+    
+      video.controls = true;
+      video.poster = movieInfo.PosterPath;
+    
+      source.src = movieInfo.Path;
+
+      track.src = movieInfo.SubtitlePath;
+      track.kind = "subtitles";
+      track.label = "English";
+
+      video.appendChild(source);
+      video.appendChild(track)
+      
+      body.appendChild(h1);
+      body.appendChild(video)
+    }
+
+
+  </script>
+
+</body>
+</html>

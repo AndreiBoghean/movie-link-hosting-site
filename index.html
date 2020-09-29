@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+  <title>Please Don't Block This :)</title>
+  <link rel="stylesheet" type="text/css" href="Styles/index.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  
+
+  <nav>
+    <div class="logo">
+    <h1 id="title">Mavies</h1>
+    </div>
+    <li><a href="test.html">Movies</a></li>
+  </nav>
+
+  <div class="content-container">
+
+  <div class="features-section">
+    <h2 class="sub-heading">Featured Movie</h2> 
+   
+  </div>
+  
+  <section class="movies-container">
+  <h2 class="sub-heading">All Movies</h2>
+
+  <div class="movies-grid">
+ 
+  </div>
+
+  </section>
+
+  </div>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-firestore.js"></script>     
+<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-storage.js"></script>
+
+<script>
+
+//#region firebase setup
+  var firebaseConfig = {
+    apiKey: "AIzaSyAcLB4KXLJuY0h0frapGOiTYozINTgwHxE",
+    authDomain: "movies-2497b.firebaseapp.com",
+    databaseURL: "https://movies-2497b.firebaseio.com",
+    projectId: "movies-2497b",
+    storageBucket: "movies-2497b.appspot.com",
+    messagingSenderId: "777577045829",
+    appId: "1:777577045829:web:1b8fd94c35bba31254a82c"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  var db = firebase.firestore();
+  var auth = firebase.auth();
+  var storage = firebase.storage();
+//#endregion
+
+//#region Displaying Movies 
+  //places to add movies (dynamic rendering)
+  const featuredArea = document.querySelector(".features-section");
+  const allMoviesGrid = document.querySelector(".movies-grid");
+  
+
+  //Get Movies and display them
+  getAllMovies()
+
+  function getAllMovies() 
+  {
+     let moviesCollection = db.collection("Movies");
+     let movieData = []
+     let movieDataDocIds = []
+
+     moviesCollection.get()
+     .then((querysnapshot) => 
+     {
+       querysnapshot.forEach(element => 
+       {
+         movieData.push(element.data());
+         movieDataDocIds.push(element.id);
+       });
+
+       renderMovies(movieData,movieDataDocIds)
+     })
+
+  }
+
+  function renderMovies(MovieData,ids) 
+  {
+    let featuredMovie = MovieData.splice(0,1);
+    let featuredId = ids.splice(0,1);
+
+    createFeaturedMovie(featuredMovie[0],featuredId[0]);
+
+    for(let i = 0; i < MovieData.length; i++) 
+    {
+       createMovieForGrid(MovieData[i],ids[i]);
+    }
+
+  }
+
+  function createFeaturedMovie(movieInfo,docID) 
+  {
+     let ui = createMovieUI(movieInfo,docID);
+
+     featuredArea.appendChild(ui);
+  }
+
+  function createMovieForGrid(movieInfo,docID) 
+  {
+    let ui = createMovieUI(movieInfo,docID);
+
+    allMoviesGrid.appendChild(ui);
+  }
+
+  function createMovieUI(movieInfo,docID) 
+  {
+     let moviePoster = document.createElement("div");
+
+     moviePoster.innerHTML = `<h2>${movieInfo.Name}</h2> <img src="${movieInfo.PosterPath}" />`
+
+     moviePoster.addEventListener("click",() => 
+     {
+       window.location = `/watch.html?movieID=${docID}`
+     })
+
+     return moviePoster;
+  }
+
+
+  //#endregion
+
+</script>
+
+</body>
+</html>
