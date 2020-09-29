@@ -114,7 +114,8 @@ form button
     background: #520D73;
     box-shadow: 2px 5px 10px rgb(114, 102, 102);
     cursor: pointer;
-    
+    margin: 20px;
+
 }
 
 .poster  img 
@@ -151,7 +152,6 @@ form button
 .movies-grid 
 {
     display: flex;
-    justify-content: space-between;
     flex-flow: wrap;
     width: 100%;
     margin-top: 20px;
