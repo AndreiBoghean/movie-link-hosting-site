@@ -159,13 +159,18 @@
   {
     let video = document.createElement("video");
     let source = document.createElement("source");
+    let track = document.createElement("track");
     
     video.controls = true;
     video.poster = movieInfo.PosterPath;
     
     source.src = movieInfo.Path;
 
+    track.src = movieInfo.SubtitlePath;
+    track.kind = "subtitles";
+
     video.appendChild(source);
+    video.appendChild(track)
 
     return video;
   }
