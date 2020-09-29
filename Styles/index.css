@@ -105,13 +105,33 @@ form button
 }
 
 
-.features-section video 
+.poster 
 {
-    width: 50em;
-    height: auto;
+    width: 20em;
+    height: 30em;
     margin-top: 20px;
     border-radius: 5px;
-    
+    background: #520D73;
+    box-shadow: 2px 5px 10px rgb(114, 102, 102);
+    cursor: pointer;
+}
+
+.poster  img 
+{
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    object-position: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.poster  h2 
+{
+    text-align: center;
+    padding: 20px;
+    color: white;
+
 }
 
 .movies-container 
@@ -136,12 +156,6 @@ form button
     margin-top: 20px;
 }
 
-.movies-grid video 
-{
-    width: 40em;
-    height: auto;
-    margin-top: 20px;
-}
 
 #upload-form 
 {

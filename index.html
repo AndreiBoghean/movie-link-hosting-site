@@ -122,7 +122,8 @@
   {
      let moviePoster = document.createElement("div");
 
-     moviePoster.innerHTML = `<h2>${movieInfo.Name}</h2> <img src="${movieInfo.PosterPath}" />`
+     moviePoster.innerHTML = ` <img src="${movieInfo.PosterPath}" /> <h2>${movieInfo.Name}</h2>`
+     moviePoster.className = "poster"
 
      moviePoster.addEventListener("click",() => 
      {
