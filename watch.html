@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="Styles/watch.css" />
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
     <title>Watch</title>
 </head>
 <body id="body">
   
   
-  <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@webtor/player-sdk-js/dist/index.min.js" charset="utf-8"></script>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
@@ -78,6 +77,25 @@
     }
 
     function renderMovie(movieInfo) 
+    {
+      window.webtor = window.webtor || [];
+      window.webtor.push({
+        id: "body",
+        magnet: movieInfo.Path,
+        on: function(e) {
+                if (e.name == window.webtor.TORRENT_FETCHED) {
+                    console.log('Torrent fetched!')
+                }
+                if (e.name == window.webtor.TORRENT_ERROR) {
+                    console.log('Torrent error!')
+                }
+        },
+        poster: movieInfo.PosterPath
+ 
+      })
+    }
+
+    function renderMovieOLD(movieInfo) 
     {
       
       let h1 = document.createElement("h1");
