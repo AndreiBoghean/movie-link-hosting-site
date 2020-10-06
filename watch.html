@@ -119,6 +119,12 @@
       video.appendChild(source);
       video.appendChild(track)
       video.id = "plyr";
+
+      if(document.getElementById("plyr")) 
+      {
+        document.getElementById("plyr").remove();
+        document.getElementsByTagName("H1")[0].remove();
+      }
       
       body.appendChild(h1);
       body.appendChild(video)
