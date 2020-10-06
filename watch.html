@@ -9,6 +9,8 @@
 </head>
 <body id="body">
 
+  <input type="file" accept="video/*" id="file-select" /> 
+
   <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
   
   
@@ -45,19 +47,28 @@
 
     const currentUrl = new URL(window.location.href);
     const queryObject = currentUrl.searchParams
+    const movieID = queryObject.get("movieID");
     const body = document.getElementById("body");
+
+    let  fileSelector = document.getElementById("file-select");
     let player;
 
-    const movieID = queryObject.get("movieID");
-
+    
     if(!movieID) 
     {
         window.location.href = "/movie-link-hosting-site/index.html"
     }
 
-    getMovieInfo();
+    fileSelector.addEventListener("change",getFile);
 
-    function getMovieInfo() 
+    function getFile() 
+    {
+      let movie = this.files[0];
+
+      getMovieInfo(movie)
+    }
+
+    function getMovieInfo(file) 
     {
         let collection = db.collection("Movies");
         let doc = collection.doc(movieID.toString());
@@ -71,7 +82,7 @@
                return;
            }
            
-           renderMovie(doc.data())
+           renderMovie(doc.data(),file);
 
 
         })
@@ -80,7 +91,7 @@
     }
 
 
-    function renderMovie(movieInfo) 
+    function renderMovie(movieInfo,movieFile) 
     {
       
       let h1 = document.createElement("h1");
@@ -94,7 +105,12 @@
       video.poster = movieInfo.PosterPath;
       video.playsInline = true;
     
-      source.src = movieInfo.Path;
+      source.src = URL.createObjectURL(movieFile);
+
+      source.onload = () => 
+      {
+        URL.revokeObjectURL(movieFile);
+      }
 
       track.src = `Subtitles/${movieInfo.SubtitlePath}`;
       track.kind = "subtitles";
