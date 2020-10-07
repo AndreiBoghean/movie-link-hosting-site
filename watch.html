@@ -98,7 +98,7 @@
       let source = document.createElement("source");
       let track = document.createElement("track");
 
-      h1.innerText = movieInfo.Name;
+      h1.innerText = movieInfo.Name + "test";
     
       video.controls = true;
       video.poster = movieInfo.PosterPath;
@@ -126,7 +126,7 @@
       }
       
       body.appendChild(h1);
-      body.appendChild(video)
+      body.appendChild(video);
 <!--
       player = new Plyr(document.getElementById('plyr'));
         -->
