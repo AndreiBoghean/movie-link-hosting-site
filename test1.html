@@ -63,3 +63,75 @@
     function getFile() 
     {
       let movie = this.files[0];
+
+      getMovieInfo(movie)
+    }
+
+    function getMovieInfo(file) 
+    {
+        let collection = db.collection("Movies");
+        let doc = collection.doc(movieID.toString());
+
+        doc.get()
+        .then(doc => 
+        {
+           if(!doc.exists) 
+           {
+               window.location.href = "/movie-link-hosting-site/index.html";
+               return;
+           }
+           
+           renderMovie(doc.data(),file);
+
+
+        })
+        .catch(error => console.log(error))
+
+    }
+
+
+    function renderMovie(movieInfo,movieFile) 
+    {
+      
+      let h1 = document.createElement("h1");
+      let video = document.createElement("video");
+      let source = document.createElement("source");
+      let track = document.createElement("track");
+
+      h1.innerText = movieInfo.Name;
+    
+      video.controls = true;
+      video.poster = movieInfo.PosterPath;
+      video.playsInline = true;
+    
+      source.src = URL.createObjectURL(movieFile);
+
+      source.onload = () => 
+      {
+        URL.revokeObjectURL(movieFile);
+      }
+
+      track.src = `Subtitles/${movieInfo.SubtitlePath}`;
+      track.kind = "subtitles";
+      track.label = "English";
+
+      video.appendChild(source);
+      video.appendChild(track)
+      video.id = "plyr";
+
+      if(document.getElementById("plyr")) 
+      {
+        document.getElementById("plyr").remove();
+        document.getElementsByTagName("H1")[0].remove();
+      }
+      
+      body.appendChild(h1);
+      body.appendChild(video)
+
+      player = new Plyr(document.getElementById('plyr'));
+    }
+
+  </script>
+
+</body>
+</html>
