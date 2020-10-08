@@ -124,9 +124,11 @@
         document.getElementById("plyr").remove();
         document.getElementsByTagName("H1")[0].remove();
       }
-      video.width = 400;
+      
       body.appendChild(h1);
       body.appendChild(video);
+        
+        player = new Plyr(document.getElementById('plyr'));
     }
 
   </script>
